@@ -2,9 +2,19 @@
 
 import sys
 
+def recursive_visit(adj, target, visited):
+    for neighbor in adj[target]:
+        if visited[neighbor] == False:
+            visited[neighbor] = True
+            recursive_visit(adj, neighbor, visited)
+
 def reach(adj, x, y):
+    visited = [False] * len(adj)
+
+    recursive_visit(adj, x, visited)
+
     #write your code here
-    return 0
+    return 1 if visited[y] else 0
 
 if __name__ == '__main__':
     input = sys.stdin.read()
