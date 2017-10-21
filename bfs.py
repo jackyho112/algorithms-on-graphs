@@ -8,41 +8,42 @@ def bfs(adj, s):
     prev = {}
     localQueue = queue.Queue()
 
-    for i in range(len(adj)):
-        dist[i] = False
-        prev[i] = []
-
     dist[s] = 0
     localQueue.put(s)
 
     while not localQueue.empty():
         current = localQueue.get()
+
         for nextNode in adj[current]:
-            if dist[nextNode] == False:
+            if nextNode not in dist:
                 localQueue.put(nextNode)
                 dist[nextNode] = dist[current] + 1
+
+                if nextNode not in prev:
+                    prev[nextNode] = []
+
                 prev[nextNode].append(current)
 
     return prev
 
 def find_distance(prev, s, t):
-    if not prev[t]:
+    if t not in prev:
         return -1
 
     distance = 0
     result = []
     current = [t]
-    while s not in result:
+    while s not in current:
         local_current = []
         distance += 1
 
         for last in current:
-            result.append(last)
-            local_current += prev[last]
+            if last in prev:
+                local_current += prev[last]
 
         current = local_current
 
-    return distance - 1
+    return distance
 
 def distance(adj, s, t):
     prev = bfs(adj, s)
