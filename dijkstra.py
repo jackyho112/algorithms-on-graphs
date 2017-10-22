@@ -1,13 +1,46 @@
 #Uses python3
 
 import sys
-import queue
 
+def extract_min(queue, dist):
+    node = min(queue, key=lambda x: dist[x])
+
+    queue.remove(node)
+
+    return node
+
+def dijkstra(adj, cost, s):
+    dist = {}
+    prev = {}
+    queue = []
+
+    for node in range(len(adj)):
+        dist[node] = float("inf")
+        prev[node] = None
+        queue.append(node)
+
+    dist[s] = 0
+
+    while queue:
+        current_node = extract_min(queue, dist)
+
+        edges = adj[current_node]
+
+        for index, target_node in enumerate(edges):
+            new_dist = dist[current_node] + cost[current_node][index]
+            if dist[target_node] > new_dist:
+                dist[target_node] = new_dist
+                prev[target_node] = current_node
+
+    return dist
 
 def distance(adj, cost, s, t):
-    #write your code here
-    return -1
+    dist = dijkstra(adj, cost, s)
 
+    if dist[t] < float("inf"):
+        return dist[t]
+
+    return -1
 
 if __name__ == '__main__':
     input = sys.stdin.read()
