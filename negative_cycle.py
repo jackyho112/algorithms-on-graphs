@@ -2,11 +2,41 @@
 
 import sys
 
+def detect_negative_cycle(adj, cost, dist):
+    for current_node in range(len(adj) - 1):
+        edges = adj[current_node]
 
-def negative_cycle(adj, cost):
-    #write your code here
+        for index, target_node in enumerate(edges):
+            new_dist = dist[current_node] + cost[current_node][index]
+            if dist[target_node] > new_dist:
+                return 1
+
     return 0
 
+def bellman_ford(adj, cost):
+    num = len(adj)
+    dist = {}
+
+    for node in range(num):
+        dist[node] = float("inf")
+
+    for target in range(num - 1):
+        if dist[target] == float("inf"):
+            dist[target] = 0
+
+        for current_node in range(num):
+            edges = adj[current_node]
+
+            for index, target_node in enumerate(edges):
+                new_dist = dist[current_node] + cost[current_node][index]
+                if dist[target_node] > new_dist:
+                    dist[target_node] = new_dist
+
+    return dist
+
+def negative_cycle(adj, cost):
+    dist = bellman_ford(adj, cost)
+    return detect_negative_cycle(adj, cost, dist)
 
 if __name__ == '__main__':
     input = sys.stdin.read()
