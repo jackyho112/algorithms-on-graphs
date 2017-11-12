@@ -9,7 +9,7 @@ def BWT(text):
     indexlist = []
     for t in table_sorted:
         index1 = table.index(t)
-        index1 = index1+1 if index1 < len(text)-1 else 0
+        index1 = index1 + 1 if index1 < len(text) - 1 else 0
         index2 = table_sorted.index(table[index1])
         indexlist.append(index2)
 
